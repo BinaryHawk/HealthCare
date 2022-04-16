@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.PhoneInputInput {
+  border: none;
+}
+
+#ev::-webkit-outer-spin-button,
+#ev::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
