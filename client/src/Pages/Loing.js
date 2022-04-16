@@ -17,6 +17,7 @@ function Login() {
   const [userInfoErrors, setUserInfoErrors] = useState({
     email: '',
     password: '',
+    server:''
   })
 
   const handleChange = async (event) => {
@@ -26,7 +27,6 @@ function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log(JSON.stringify(userInfo))
     fetch("http://127.0.0.1:4000/login",{ 
       method:'POST',
       headers: {
@@ -34,8 +34,26 @@ function Login() {
       },
       body: JSON.stringify(userInfo)})
     .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
+    .then(res => JSON.parse(res))
+    .then(res => {
+      switch (res.code) {
+        case 1:
+          window.localStorage.setItem('HealthCareUser', res)
+          window.location.replace('/homepage')
+          break;
+        case 2:
+          setUserInfoErrors({...userInfoErrors, email: 'Email doesn\'t exists'})
+            break;
+        case 3:
+          setUserInfoErrors({...userInfoErrors, password: 'Wrong password'})
+          break;
+        case 4:
+          setUserInfoErrors({...userInfoErrors, server: '500! server  error'})
+          break;
+        default:
+          break;
+      }
+    })
   }
 
   useEffect(() => {
@@ -59,14 +77,16 @@ function Login() {
       <Container className='align-self-center' style={{width: "350px"}}>
       <Form onSubmit={handleSubmit}>
       <Col  >
-        <Row  className='justify-content-center my-4'>
+        <Row  className='justify-content-center my-3'>
           <Link style={{width:'100%'}} to={'/register'}>
             <Button style={{width:'100%'}} size='lg'> 
               Create A Free Account 
             </Button>
           </Link>
         </Row>
-
+        <Row  style={{textAlign: 'center'}}>
+          <h6 style={{color:'red'}}>{userInfoErrors.server}</h6>
+        </Row>
         <Row className='my-3'>
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>

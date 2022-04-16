@@ -3,7 +3,7 @@ import { Button, Container, Form } from 'react-bootstrap'
 
 function EmailValidation() {
 
-    const [userInput,setUserInput] = useState(null)
+    const [userInput,setUserInput] = useState('')
     const [errorMSG, setErrorMSG] = useState(false)
 
     const handleChange = (event)=>{
@@ -27,7 +27,7 @@ function EmailValidation() {
         .then(res => 
           {
             if(JSON.parse(res).validated){
-              window.location.replace('/homepage')
+              //window.location.replace('/homepage')
             }else{
               setErrorMSG(true)
             }

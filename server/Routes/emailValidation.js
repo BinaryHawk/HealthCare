@@ -34,7 +34,7 @@ router.post('/emailValidation',async (req,res) => {
         mongoose.connect(config.dbPath)
         const data = await validationEmailModel.findOne({email: req.body.email})
         if (req.body.email == data.email && req.body.code == data.validationCode) {
-            userSchema.updateOne({email: req.body.email},{validAccount: true})
+            await userSchema.updateOne({email: req.body.email},{validAccount: true})
             res.json({validated : true})
         } else {
             res.json({validated : false})
